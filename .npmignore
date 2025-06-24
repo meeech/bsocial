@@ -1,0 +1,36 @@
+# Source files
+src/
+
+# Test files
+__tests__/
+*.test.ts
+
+# Config files
+.gitignore
+.github/
+.editorconfig
+.eslintrc.json
+.prettierrc
+.prettierignore
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+coverage/
+dist/__tests__
+
+# Logs
+logs
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -41,9 +41,9 @@ export async function postToAll(content: string): Promise<void> {
         typeof value === "object" &&
         value !== null &&
         "platform" in value &&
-        typeof (value).platform === "string" &&
+        typeof value.platform === "string" &&
         "error" in value &&
-        typeof (value).error === "string"
+        typeof value.error === "string"
       );
     });
 

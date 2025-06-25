@@ -1,4 +1,4 @@
-# broadcast social
+# 🐝 bsocial (broadcast social)
 
 A simple CLI tool to post to multiple social media platforms from a markdown file.
 

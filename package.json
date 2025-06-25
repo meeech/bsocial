@@ -1,7 +1,7 @@
 {
   "type": "module",
-  "name": "bsocial",
-  "version": "0.1.0",
+  "name": "broadcast-social",
+  "version": "1.0.0",
   "description": "CLI tool to post to Mastodon and Bluesky",
   "main": "dist/cli.js",
   "bin": {
@@ -26,7 +26,7 @@
     "social",
     "cli"
   ],
-  "author": "swe & meeech",
+  "author": "mitcheLLM",
   "license": "MIT",
   "dependencies": {
     "@atproto/api": "^0.15.17",
@@ -47,6 +47,6 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   }
 }

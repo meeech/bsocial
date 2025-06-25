@@ -1,4 +1,4 @@
-# bsocial
+# broadcast social
 
 A simple CLI tool to post to multiple social media platforms from a markdown file.
 
@@ -82,3 +82,7 @@ Hello world! This post will be published to both Mastodon and Bluesky.
 ## License
 
 MIT
+
+## Note
+
+Agentic Development involved in produciton of this code.

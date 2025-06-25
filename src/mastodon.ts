@@ -1,5 +1,7 @@
-import fetch from 'node-fetch';
 import { ConfigError } from './utils.js';
+
+// Using built-in fetch API available in Node.js 18+
+// No need to import or declare it
 
 const MASTODON_ACCESS_TOKEN = process.env.MASTODON_ACCESS_TOKEN;
 const MASTODON_API_URL = process.env.MASTODON_API_URL || 'https://mastodon.social/api/v1';

@@ -14,7 +14,7 @@ A simple CLI tool to post to multiple social media platforms from a markdown fil
 
 ```bash
 # Install globally
-npm install -g bsocial
+npm install -g broadcast-social
 
 # Or use with npx
 npx bsocial -f your-post.md

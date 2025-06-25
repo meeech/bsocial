@@ -2,29 +2,57 @@ import { postToMastodon } from "./mastodon.js";
 import { postToBluesky } from "./bluesky.js";
 import { truncate } from "./utils.js";
 
+interface PostError {
+  platform: string;
+  error: string;
+}
+
 export async function postToAll(content: string): Promise<void> {
   const results = await Promise.allSettled([
-    postToMastodon(content).catch((error) => ({
-      platform: "Mastodon",
-      error: error instanceof Error ? error.message : String(error),
-    })),
-    postToBluesky(content).catch((error) => ({
-      platform: "Bluesky",
-      error: error instanceof Error ? error.message : String(error),
-    })),
+    postToMastodon(content).catch(
+      (error): PostError => ({
+        platform: "Mastodon",
+        error: error instanceof Error ? error.message : String(error),
+      })
+    ),
+    postToBluesky(content).catch(
+      (error): PostError => ({
+        platform: "Bluesky",
+        error: error instanceof Error ? error.message : String(error),
+      })
+    ),
   ]);
 
-  const errors = results
+  // All promises in 'results' will be fulfilled because of the inner .catch
+  // Their 'value' will be the original success type (e.g., void) or PostError
+  // All promises in 'results' are fulfilled because of the inner .catch.
+  // Their 'value' will be either 'void' (on success) or 'PostError' (on caught error).
+  const errors: PostError[] = results
     .filter(
-      (result): result is PromiseRejectedResult => result.status === "rejected"
+      // This type predicate asserts that we are only dealing with fulfilled promises
+      // and that their value is of type void | PostError.
+      (result): result is PromiseFulfilledResult<void | PostError> =>
+        result.status === "fulfilled"
     )
-    .map((result) => result.reason);
+    .map((fulfilledResult) => fulfilledResult.value) // Extract the value
+    .filter((value): value is PostError => {
+      // This type guard filters out 'void' values and confirms 'value' is a PostError.
+      return (
+        typeof value === "object" &&
+        value !== null &&
+        "platform" in value &&
+        typeof (value).platform === "string" &&
+        "error" in value &&
+        typeof (value).error === "string"
+      );
+    });
 
   if (errors.length > 0) {
     const errorMessages = errors
       .map(
-        (err) =>
-          `- ${err.platform || "Unknown platform"}: ${truncate(err.error, 200)}`
+        (
+          err: PostError // err is now definitely PostError
+        ) => `- ${err.platform}: ${truncate(err.error, 200)}`
       )
       .join("\n");
 

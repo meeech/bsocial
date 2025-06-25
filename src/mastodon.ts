@@ -1,17 +1,16 @@
 import { ConfigError } from "./utils.js";
+import { MastodonConfig } from "./config.js"; // Import MastodonConfig
 
 // Using built-in fetch API available in Node.js 18+
 // No need to import or declare it
 
-const MASTODON_ACCESS_TOKEN = process.env.MASTODON_ACCESS_TOKEN;
-const MASTODON_API_URL = process.env.MASTODON_API_URL;
-
 const MAX_POST_LENGTH = 500; // Mastodon's default post length
 
-export async function postToMastodon(content: string): Promise<void> {
-  if (!MASTODON_ACCESS_TOKEN) {
-    throw new ConfigError("MASTODON_ACCESS_TOKEN is not set");
-  }
+export async function postToMastodon(
+  config: MastodonConfig,
+  content: string
+): Promise<void> {
+  // ConfigError for missing token/URL is now handled by loadAppConfig
 
   if (content.length > MAX_POST_LENGTH) {
     throw new Error(
@@ -20,11 +19,11 @@ export async function postToMastodon(content: string): Promise<void> {
   }
 
   try {
-    const response = await fetch(`${MASTODON_API_URL}/statuses`, {
+    const response = await fetch(`${config.apiUrl}/statuses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${MASTODON_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${config.accessToken}`,
         "Idempotency-Key": generateIdempotencyKey(content),
       },
       body: JSON.stringify({

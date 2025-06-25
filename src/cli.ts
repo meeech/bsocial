@@ -3,12 +3,10 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 import { postToAll } from "./poster.js";
-import dotenv from "dotenv";
+// dotenv is imported and config called within loadAppConfig
 import { readFileSync } from "fs";
-import { validateEnv, ConfigError, formatError } from "./utils.js";
-
-// Load environment variables first
-dotenv.config();
+import { ConfigError, formatError } from "./utils.js";
+import { loadAppConfig } from "./config.js";
 
 export async function main() {
   const argv = await yargs(hideBin(process.argv))
@@ -30,8 +28,8 @@ export async function main() {
     .parse();
 
   try {
-    // Validate environment
-    validateEnv();
+    // Load and validate configuration
+    const appConfig = loadAppConfig();
 
     // Read and validate content
     let content: string;
@@ -57,7 +55,7 @@ export async function main() {
       return;
     }
 
-    await postToAll(content);
+    await postToAll(appConfig, content);
     console.log("✅ Successfully posted to all platforms");
   } catch (error) {
     if (error instanceof ConfigError) {

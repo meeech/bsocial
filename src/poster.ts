@@ -1,21 +1,25 @@
 import { postToMastodon } from "./mastodon.js";
 import { postToBluesky } from "./bluesky.js";
 import { truncate } from "./utils.js";
+import { AppConfig } from "./config.js"; // Import AppConfig
 
 interface PostError {
   platform: string;
   error: string;
 }
 
-export async function postToAll(content: string): Promise<void> {
+export async function postToAll(
+  appConfig: AppConfig,
+  content: string
+): Promise<void> {
   const results = await Promise.allSettled([
-    postToMastodon(content).catch(
+    postToMastodon(appConfig.mastodon, content).catch(
       (error): PostError => ({
         platform: "Mastodon",
         error: error instanceof Error ? error.message : String(error),
       })
     ),
-    postToBluesky(content).catch(
+    postToBluesky(appConfig.bluesky, content).catch(
       (error): PostError => ({
         platform: "Bluesky",
         error: error instanceof Error ? error.message : String(error),

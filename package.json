@@ -1,8 +1,8 @@
 {
   "type": "module",
-  "name": "bsocial",
+  "name": "broadcast-social",
   "version": "1.0.0",
-  "description": "CLI tool to post to Mastodon and Bluesky",
+  "description": "CLI tool to post to Mastodon and Bluesky (more to come) from a markdown file",
   "main": "dist/cli.js",
   "bin": {
     "bsocial": "./dist/cli.js"
